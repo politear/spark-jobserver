@@ -13,7 +13,7 @@ object JobServerRelease {
       homepage := Some(url("https://github.com/spark-jobserver/spark-jobserver")),
       tags in lsync := Seq("spark", "akka", "rest"),
       description in lsync := "REST job server for Apache Spark",
-      externalResolvers in lsync := Seq("Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"),
+//      externalResolvers in lsync := Seq("Job Server Bintray" at "http://dl.bintray.com/spark-jobserver/maven"),
       ghUser in lsync := Some("spark-jobserver"),
       ghRepo in lsync := Some("spark-jobserver"),
       ghBranch in lsync := Some("master")

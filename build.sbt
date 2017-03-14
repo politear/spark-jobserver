@@ -9,7 +9,7 @@ lazy val akkaApp = Project(id = "akka-app", base = file("akka-app"))
   .settings(description := "Common Akka application stack: metrics, tracing, logging, and more.")
   .settings(commonSettings)
   .settings(libraryDependencies ++= coreTestDeps ++ akkaDeps)
-  .settings(publishSettings)
+//  .settings(publishSettings)
   .disablePlugins(SbtScalariform)
 
 lazy val jobServer = Project(id = "job-server", base = file("job-server"))
@@ -34,7 +34,7 @@ lazy val jobServer = Project(id = "job-server", base = file("job-server"))
     test in assembly := {},
     fork in Test := true
   )
-  .settings(publishSettings)
+//  .settings(publishSettings)
   .dependsOn(akkaApp, jobServerApi)
   .disablePlugins(SbtScalariform)
 
@@ -46,7 +46,7 @@ lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-se
 
 lazy val jobServerApi = Project(id = "job-server-api", base = file("job-server-api"))
   .settings(commonSettings)
-  .settings(publishSettings)
+//  .settings(publishSettings)
   .disablePlugins(SbtScalariform)
 
 lazy val jobServerExtras = Project(id = "job-server-extras", base = file("job-server-extras"))
@@ -84,7 +84,7 @@ lazy val root = Project(id = "root", base = file("."))
   .dependsOn(jobServer, jobServerExtras)
   .disablePlugins(SbtScalariform).enablePlugins(DockerPlugin)
 
-lazy val jobServerExtrasSettings = revolverSettings ++ Assembly.settings ++ publishSettings ++ Seq(
+lazy val jobServerExtrasSettings = revolverSettings ++ Assembly.settings ++ Seq(
   libraryDependencies ++= sparkExtraDeps,
   // Extras packages up its own jar for testing itself
   test in Test <<= (test in Test).dependsOn(packageBin in Compile)
@@ -100,7 +100,7 @@ lazy val testPython = taskKey[Unit]("Launch a sub process to run the Python test
 lazy val buildPython = taskKey[Unit]("Build the python side of python support into an egg")
 lazy val buildPyExamples = taskKey[Unit]("Build the examples of python jobs into an egg")
 
-lazy val jobServerPythonSettings = revolverSettings ++ Assembly.settings ++ publishSettings ++ Seq(
+lazy val jobServerPythonSettings = revolverSettings ++ Assembly.settings ++ Seq(
   libraryDependencies ++= sparkPythonDeps,
   fork in Test := true,
   cancelable in Test := true,
@@ -218,11 +218,15 @@ lazy val extraJarPaths = Option(System.getenv("EXTRA_JAR"))
 lazy val runScalaStyle = taskKey[Unit]("testScalaStyle")
 
 lazy val commonSettings = Defaults.coreDefaultSettings ++ dirSettings ++ implicitlySettings ++ Seq(
-  organization := "spark.jobserver",
+//  organization := "spark.jobserver",
   crossPaths   := true,
   scalaVersion := sys.env.getOrElse("SCALA_VERSION", "2.11.8"),
   dependencyOverrides += "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-  publishTo := Some(Resolver.file("Unused repo", file("target/unusedrepo"))),
+  publishTo := Some("Artifactory Realm" at "https://zignal.artifactoryonline.com/zignal/zignal"),
+  credentials += Credentials("Artifactory Realm", "zignal.artifactoryonline.com", "buildserver", "buildserver"),
+  organization := "spark-jobserver",
+
+//  publishTo := Some(Resolver.file("Unused repo", file("target/unusedrepo"))),
   // scalastyleFailOnError := true,
   runScalaStyle := {
     org.scalastyle.sbt.ScalastylePlugin.scalastyle.in(Compile).toTask("").value
@@ -258,10 +262,13 @@ lazy val scoverageSettings = {
   coverageExcludedPackages := ".+Benchmark.*"
 }
 
-lazy val publishSettings = Seq(
-  licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
-  bintrayOrganization := Some("spark-jobserver")
-)
+credentials += Credentials("Artifactory Realm", "zignal.artifactoryonline.com", "buildserver", "buildserver")
+organization := "spark-jobserver"
+
+//lazy val publishSettings = Seq(
+//  licenses += ("Apache-2.0", url("http://choosealicense.com/licenses/apache/")),
+//  bintrayOrganization := Some("spark-jobserver")
+//)
 
 // This is here so we can easily switch back to Logback when Spark fixes its log4j dependency.
 lazy val jobServerLogbackLogging = "-Dlogback.configurationFile=config/logback-local.xml"
