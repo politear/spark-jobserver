@@ -22,7 +22,7 @@ object Dependencies {
     "io.spray" %% "spray-json" % sprayJson,
     "io.spray" %% "spray-can" % spray,
     "io.spray" %% "spray-caching" % spray,
-    "io.spray" %% "spray-routing-shapeless23" % "1.3.3",
+    "io.spray" %% "spray-routing" % spray,
     "io.spray" %% "spray-client" % spray,
     yammerDeps
   )
@@ -35,11 +35,12 @@ object Dependencies {
   lazy val sparkDeps = Seq(
     "org.apache.spark" %% "spark-core" % sparkVersion % "provided" excludeAll(excludeNettyIo, excludeQQ),
     // Force netty version.  This avoids some Spark netty dependency problem.
-    "io.netty" % "netty-all" % "4.0.37.Final"
+    "io.netty" % "netty-all" % "4.0.37.Final",
+    "org.apache.spark" %% "spark-mllib" % sparkVersion excludeAll(excludeNettyIo, excludeQQ)
   )
 
   lazy val sparkExtraDeps = Seq(
-    "org.apache.spark" %% "spark-mllib" % sparkVersion % Provided excludeAll(excludeNettyIo, excludeQQ),
+    "org.apache.spark" %% "spark-mllib" % sparkVersion excludeAll(excludeNettyIo, excludeQQ),
     "org.apache.spark" %% "spark-sql" % sparkVersion % Provided excludeAll(excludeNettyIo, excludeQQ),
     "org.apache.spark" %% "spark-streaming" % sparkVersion % Provided excludeAll(excludeNettyIo, excludeQQ),
     "org.apache.spark" %% "spark-hive" % sparkVersion % Provided excludeAll(
@@ -79,7 +80,7 @@ object Dependencies {
   )
 
   lazy val securityDeps = Seq(
-     "org.apache.shiro" % "shiro-core" % shiro
+    "org.apache.shiro" % "shiro-core" % shiro
   )
 
   lazy val serverDeps = apiDeps
