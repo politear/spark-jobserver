@@ -18,7 +18,7 @@ lazy val jobServer = Project(id = "job-server", base = file("job-server"))
   .settings(Assembly.settings)
   .settings(
     description := "Spark as a Service: a RESTful job server for Apache Spark",
-    libraryDependencies ++= sparkDeps ++ slickDeps ++ cassandraDeps ++ securityDeps ++ coreTestDeps,
+    libraryDependencies ++= zignalDeps ++ sparkDeps ++ slickDeps ++ cassandraDeps ++ securityDeps ++ coreTestDeps,
     test in Test <<= (test in Test).dependsOn(packageBin in Compile in jobServerTestJar)
       .dependsOn(clean in Compile in jobServerTestJar)
       .dependsOn(buildPython in jobServerPython)
@@ -111,7 +111,7 @@ lazy val jobServerPythonSettings = revolverSettings ++ Assembly.settings ++ Seq(
 )
 
 lazy val jobServerTestJarSettings = Seq(
-  libraryDependencies ++= sparkDeps ++ apiDeps,
+  libraryDependencies ++= zignalDeps ++ sparkDeps ++ apiDeps,
   publishArtifact := false,
   description := "Test jar for Spark Job Server",
   exportJars := true // use the jar instead of target/classes

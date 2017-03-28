@@ -32,11 +32,19 @@ object Dependencies {
   val mesosVersion = sys.env.getOrElse("MESOS_VERSION", mesos)
 
   val sparkVersion = sys.env.getOrElse("SPARK_VERSION", spark)
+
+  lazy val zignalDeps = Seq(
+    "org.apache.spark" %% "spark-mllib" % sparkVersion excludeAll(excludeNettyIo, excludeQQ),
+    "com.github.scopt" % "scopt_2.11" % "3.5.0",
+    "com.typesafe.play" %% "play-json" % "2.3.7",
+    "net.databinder.dispatch" %% "dispatch-core" % "0.12.0"
+
+  )
+
   lazy val sparkDeps = Seq(
     "org.apache.spark" %% "spark-core" % sparkVersion % "provided" excludeAll(excludeNettyIo, excludeQQ),
     // Force netty version.  This avoids some Spark netty dependency problem.
-    "io.netty" % "netty-all" % "4.0.37.Final",
-    "org.apache.spark" %% "spark-mllib" % sparkVersion excludeAll(excludeNettyIo, excludeQQ)
+    "io.netty" % "netty-all" % "4.0.37.Final"
   )
 
   lazy val sparkExtraDeps = Seq(
@@ -84,7 +92,7 @@ object Dependencies {
   )
 
   lazy val serverDeps = apiDeps
-  lazy val apiDeps = sparkDeps ++ miscDeps :+ typeSafeConfigDeps :+ scalaTestDep
+  lazy val apiDeps = zignalDeps ++ sparkDeps ++ miscDeps :+ typeSafeConfigDeps :+ scalaTestDep
 
   val repos = Seq(
     "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/",
