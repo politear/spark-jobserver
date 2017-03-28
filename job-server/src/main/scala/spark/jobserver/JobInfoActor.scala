@@ -34,7 +34,8 @@ class JobInfoActor(jobDao: JobDAO, contextSupervisor: ActorRef) extends Instrume
   override def wrappedReceive: Receive = {
     case GetJobStatuses(limit, statusOpt) =>
       val originator = sender
-      jobDao.getJobInfos(limit.get, statusOpt).foreach(originator ! _)
+      jobDao.getJobInfos(limit.get, statusOpt).map(s =>
+        s.sortBy(-1*_.startTime.getMillis)).foreach(originator ! _)
 
     case GetJobStatus(jobId) =>
       val originator = sender
