@@ -7,13 +7,13 @@ APP_GROUP=spark
 JMX_PORT=9999
 # optional SSH Key to login to deploy server
 #SSH_KEY=/path/to/keyfile.pem
-INSTALL_DIR=/usr/spark-2.1.0/job-server
+INSTALL_DIR=/spark/job-server
 LOG_DIR=/var/log/job-server
 PIDFILE=spark-jobserver.pid
 JOBSERVER_MEMORY=3G
-SPARK_VERSION=2.0.1
+SPARK_VERSION=2.1.0
 MAX_DIRECT_MEMORY=2G
-SPARK_HOME=/usr/spark-2.1.0
+SPARK_HOME=/spark
 SPARK_CONF_DIR=$SPARK_HOME/conf
 # Only needed for Mesos deploys
 #SPARK_EXECUTOR_URI=/home/spark/spark-1.6.0.tar.gz

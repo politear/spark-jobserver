@@ -9,4 +9,5 @@ object ExclusionRules {
   val excludeAsm = ExclusionRule(organization = "asm")
   val excludeQQ = ExclusionRule(organization = "org.scalamacros")
   val excludeJetS3t = ExclusionRule(organization = "net.java.dev.jets3t")
+  val excludeHadoop = ExclusionRule(organization = "org.apache.hadoop")
 }
